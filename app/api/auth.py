@@ -8,8 +8,12 @@ from app.schemas.auth import Token, TokenData
 from app.schemas.user import UserCreate, UserResponse
 from app.crud.user import create_user, get_user_by_username
 from app.core.security import verify_password, get_password_hash
+import dotenv
+import os
 
-SECRET_KEY = dotenv.get("SECRET_KEY")
+dotenv.load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
