@@ -1,8 +1,17 @@
 from sqlalchemy.orm import Session
 from app.models.task import Task
 from app.schemas.task import TaskCreate, TaskUpdate
+from app.models.category import Category
+from datetime import datetime
+from fastapi import HTTPException
+
 
 def create_task(db: Session, task: TaskCreate, user_id: int):
+
+    category = db.query(Category).filter(Category.id == task.category_id).first()
+    if not category:
+        raise HTTPException(status_code=400, detail="Categoria no encontrada")
+
     db_task = Task(
         texto=task.texto,
         fecha_creacion=datetime.now(),
@@ -23,6 +32,9 @@ def get_task(db: Session, task_id: int):
 
 def get_tasks(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return db.query(Task).filter(Task.user_id == user_id).offset(skip).limit(limit).all()
+
+
+    
 
 def update_task(db: Session, task_id: int, task: TaskUpdate):
     db_task = db.query(Task).filter(Task.id == task_id).first()

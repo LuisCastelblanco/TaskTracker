@@ -1,3 +1,4 @@
+# app/crud/user.py
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
@@ -7,7 +8,7 @@ def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.contrasenia)
     db_user = User(
         nombre_usuario=user.nombre_usuario,
-        hashed_contrasenia=hashed_password,
+        contrasenia=hashed_password,  # Changed from hashed_contrasenia to contrasenia
         imagen_perfil=user.imagen_perfil
     )
     db.add(db_user)
@@ -32,7 +33,7 @@ def update_user(db: Session, user_id: int, user: UserUpdate):
     if user.nombre_usuario is not None:
         db_user.nombre_usuario = user.nombre_usuario
     if user.contrasenia is not None:
-        db_user.hashed_contrasenia = get_password_hash(user.contrasenia)
+        db_user.contrasenia = get_password_hash(user.contrasenia)  # Changed from hashed_contrasenia to contrasenia
     if user.imagen_perfil is not None:
         db_user.imagen_perfil = user.imagen_perfil
 
