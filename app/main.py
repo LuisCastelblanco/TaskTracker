@@ -1,8 +1,8 @@
 # main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import init_db
 import logging
+from app.db.database import init_db
 
 
 logging.basicConfig(level=logging.INFO)
