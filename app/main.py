@@ -25,10 +25,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Import your routers after CORS configuration
 from app.api import auth, tasks, categories, user
 
-# Include routers
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(tasks.router, prefix="/tasks", tags=["tasks"])
 app.include_router(categories.router, prefix="/categories", tags=["categories"])
@@ -38,3 +36,7 @@ app.include_router(user.router, prefix="/users", tags=["users"])
 async def root():
     logger.info("Root endpoint accessed")
     return {"message": "Welcome to TaskTracker API"}
+
+def setup_postman_generator(app: FastAPI):
+    """Setup Postman collection generator routes."""
+    app.include_router(router, prefix="/postman", tags=["postman"])
