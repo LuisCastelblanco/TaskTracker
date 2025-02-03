@@ -13,7 +13,10 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 
 load_dotenv()
 
-DATABASE_URL = "postgresql://postgres:cheo2001@localhost:5432/tasktracker"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://postgres:cheo2001@localhost:5432/tasktracker"
+)
 
 engine = create_engine(
     DATABASE_URL,
@@ -35,13 +38,11 @@ def get_db():
 
 def init_db():
     try:
-        # Import models here to avoid circular imports
         from app.models.user import User
         from app.models.task import Task
         from app.models.category import Category
         
         logger.info("Creating database tables...")
-        Base.metadata.drop_all(bind=engine)  # This will drop existing tables
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables created successfully!")
     except Exception as e:
